@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:habaybna/IncDec/cubit/counter_cubit.dart';
-import 'package:habaybna/bloc/counter_bloc.dart';
-import 'package:habaybna/home_page.dart';
+import 'package:habaybna/add_todo_page.dart';
+import 'package:habaybna/cubit/todo_cubit.dart';
+import 'package:habaybna/todo_list.dart';
 
 void main() {
   runApp(const MyApp());
@@ -15,8 +15,9 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MultiBlocProvider(
       providers: [
-        BlocProvider(create: (_) => CounterCubit()),
-        BlocProvider(create: (_) => CounterBloc()),
+        BlocProvider(
+          create: (context) => TodoCubit(),
+        ),
       ],
       child: MaterialApp(
         title: 'Flutter Demo',
@@ -24,7 +25,11 @@ class MyApp extends StatelessWidget {
           colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
           useMaterial3: true,
         ),
-        home: const MyHomePage(title: 'Flutter Demo Home Page'),
+        initialRoute: '/',
+        routes: {
+          '/': (_) => const TodoList(),
+          '/add-todo': (_) => const AddTodoPage(),
+        },
       ),
     );
   }
