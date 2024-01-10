@@ -1,10 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:habaybna/add_todo_page.dart';
-import 'package:habaybna/cubit/todo_cubit.dart';
-import 'package:habaybna/todo_list.dart';
+import 'package:habaybna/app_bloc_observer.dart';
+import 'package:habaybna/bloc/auth_bloc.dart';
+import 'package:habaybna/login_screen.dart';
+import 'package:habaybna/pallete.dart';
 
 void main() {
+  Bloc.observer = AppBlocObserver();
   runApp(const MyApp());
 }
 
@@ -16,20 +18,15 @@ class MyApp extends StatelessWidget {
     return MultiBlocProvider(
       providers: [
         BlocProvider(
-          create: (context) => TodoCubit(),
+          create: (context) => AuthBloc(),
         ),
       ],
       child: MaterialApp(
         title: 'Flutter Demo',
-        theme: ThemeData(
-          colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
-          useMaterial3: true,
+        theme: ThemeData.dark().copyWith(
+          scaffoldBackgroundColor: Pallete.backgroundColor,
         ),
-        initialRoute: '/',
-        routes: {
-          '/': (_) => const TodoList(),
-          '/add-todo': (_) => const AddTodoPage(),
-        },
+        home: const LoginScreen(),
       ),
     );
   }
