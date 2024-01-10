@@ -1,12 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:habaybna/app_bloc_observer.dart';
-import 'package:habaybna/bloc/auth_bloc.dart';
-import 'package:habaybna/login_screen.dart';
-import 'package:habaybna/pallete.dart';
+import 'package:habaybna/bloc/weather_bloc.dart';
+import 'package:habaybna/data/data_provider/weather_data_provider.dart';
+import 'package:habaybna/data/respository/weather_repository.dart';
+import 'package:habaybna/presentation/screens/weather_screen.dart';
 
 void main() {
-  Bloc.observer = AppBlocObserver();
   runApp(const MyApp());
 }
 
@@ -15,18 +14,19 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return MultiBlocProvider(
-      providers: [
-        BlocProvider(
-          create: (context) => AuthBloc(),
+    return RepositoryProvider(
+      create: (context) => WeatherRepository(
+        weatherDataProvider: WeatherDataProvider(),
+      ),
+      child: BlocProvider(
+        create: (context) => WeatherBloc(
+          weatherRepository: context.read<WeatherRepository>(),
         ),
-      ],
-      child: MaterialApp(
-        title: 'Flutter Demo',
-        theme: ThemeData.dark().copyWith(
-          scaffoldBackgroundColor: Pallete.backgroundColor,
+        child: MaterialApp(
+          debugShowCheckedModeBanner: false,
+          theme: ThemeData.dark(useMaterial3: true),
+          home: const WeatherScreen(),
         ),
-        home: const LoginScreen(),
       ),
     );
   }
